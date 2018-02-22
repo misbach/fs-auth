@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+	<head>
+	  <meta charset="utf-8">
+	  <title>FamilySearch Auth</title>
+	</head>
+	<body>
+		<h1>FamilySearch Authenticator</h1>
+		<p>Authentication example for FamilySearch. Uses OAuth 2.0</p>
+		<a onclick="fs.oauthRedirect()" href="javascript:void(0);">Login</a>
+		<pre id="user"></pre>
+
+		<script src="https://unpkg.com/fs-js-lite@latest/dist/FamilySearch.min.js"></script>
+		<script type="text/javascript">
+		var fs = new FamilySearch({
+		  environment: 'production',
+		  appKey: 'a02j000000KTRjpAAH',
+		  redirectUri: 'https://misbach.github.io/fs-auth/'
+		  // redirectUri: 'http://localhost:5000/'
+		});
+
+		// Finish oauth flow by obtaining access_token
+		fs.oauthResponse(function() {
+			// Get user meta data
+			fs.get('/platform/users/current', function(error, response) {
+				let user = JSON.stringify(response.data.users[0]);
+				document.getElementById("user").innerHTML = user.replace(/,/g,",\n");
+				console.log(response.data.users[0]);
+			});
+		});
+		</script>
+	</body>
+</html>
