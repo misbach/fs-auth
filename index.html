@@ -6,9 +6,14 @@
 	</head>
 	<body>
 		<h1>FamilySearch Authenticator</h1>
-		<p>Authentication example for FamilySearch. Uses OAuth 2.0</p>
-		<a onclick="fs.oauthRedirect()" href="javascript:void(0);">Login</a>
-		<pre id="user"></pre>
+		<p>Authentication example using FamilySearch OpenId Connect API</p>
+		<a onclick="fs.oauthRedirect()" href="javascript:void(0)">Login</a>
+		<div id="info" style="display: none;">
+			<h3>JWT Info</h3>
+			<pre id="jwt"></pre>
+			<h3>User Info</h3>
+			<pre id="user"></pre>
+		</div>
 
 		<script src="https://unpkg.com/fs-js-lite@latest/dist/FamilySearch.min.js"></script>
 		<script type="text/javascript">
@@ -16,16 +21,21 @@
 		  environment: 'production',
 		  appKey: 'a02j000000KTRjpAAH',
 		  redirectUri: 'https://misbach.github.io/fs-auth/'
-		  // redirectUri: 'http://localhost:5000/'
+		  // redirectUri: 'http://localhost:5000'
 		});
 
 		// Finish oauth flow by obtaining access_token
 		fs.oauthResponse(function() {
-			// Get user meta data
+			document.getElementById("info").removeAttribute("style");
+
+			// Decode the OpenID Connect JWT
+			var token = JSON.parse(atob(fs.jwt.split('.')[1]));
+			document.getElementById("jwt").innerHTML = JSON.stringify(token).replace(/,/g,",\n");
+
+			// FamilySearch API Call (Get User Data)
 			fs.get('/platform/users/current', function(error, response) {
 				let user = JSON.stringify(response.data.users[0]);
 				document.getElementById("user").innerHTML = user.replace(/,/g,",\n");
-				console.log(response.data.users[0]);
 			});
 		});
 		</script>
