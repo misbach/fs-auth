@@ -3,6 +3,8 @@ A sample app that shows how to authenticate to FamilySearch and get user meta da
 
 Click [here](https://misbach.github.io/fs-auth/index.html) to see a running example.
 
+Click [here](https://misbach.github.io/fs-auth/index_raw.html) to see an example that does not use the fs-js-lite SDK and has no dependancies.
+
 ## To use
 Replace the "appKey" with your own appKey. To get an app key go [partners.familysearch.org](https://partners.familysearch.org/)
 
