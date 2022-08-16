@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>FamilySearch Auth</title>
+	</head>
+	<body>
+		<h1>FamilySearch Authenticator (From Scratch, no SDK)</h1>
+		<p>Authentication example using FamilySearch OpenId Connect API</p>
+		<a id="login" href="">Login</a>
+		<div id="info">
+			<h3>User Info (JWT)</h3>
+			<pre id="jwt"></pre>
+		</div>
+
+		<script type="text/javascript">
+			var appKey = 'a02j000000KTRjpAAH';
+			var redirect = 'https://misbach.github.io/fs-auth/index_raw.html';
+			// var redirect = 'http://localhost:5000/index_raw.html';
+			var authUrl = "https://ident.familysearch.org/cis-web/oauth2/v3/authorization?response_type=code&scope=openid%20profile%20email%20qualifies_for_affiliate_account%20country&client_id="+appKey+"&redirect_uri="+redirect;
+
+			// Set Login link
+			document.getElementById("login").setAttribute("href", authUrl);
+
+			// Get "code" query param
+			var code = new URLSearchParams(window.location.search).get('code');
+
+			// Get the JWT
+			if (code) {
+				fetch('https://ident.familysearch.org/cis-web/oauth2/v3/token?redirect_uri='+redirect, {
+						method: "POST",
+						headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+						body: 'grant_type=authorization_code&code='+code+'&client_id='+appKey
+					})
+					.then(function(rsp) { return rsp.json() })
+					.then(function(obj) {
+						var token = JSON.parse(atob(obj.id_token.split('.')[1]));
+						document.getElementById("jwt").innerHTML = JSON.stringify(token).replace(/,/g,",\n");
+					});
+			}
+		</script>
+	</body>
+</html>

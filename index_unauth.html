@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>FamilySearch Auth</title>
+	</head>
+	<body>
+		<h1>FamilySearch Unauthenticated Session</h1>
+		<p>Example of how to get an <a href="https://www.familysearch.org/developers/docs/guides/authentication#unauthenticated-access-tokens" target="_blank">unauthenticated session</a>.</p>
+		<p>Your session is: <span id="token"></span></p>
+
+		<script type="text/javascript">
+			let appKey = 'a02j000000KTRjpAAH';
+			fetch('https://ident.familysearch.org/cis-web/oauth2/v3/token', {
+				method: "POST",
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				body: 'grant_type=unauthenticated_session&ip_address=127.0.0.1&client_id='+appKey
+			})
+			.then(function(rsp) { return rsp.json() })
+			.then(function(obj) {
+				document.getElementById("token").innerHTML = obj.token;
+			});
+		</script>
+	</body>
+</html>
