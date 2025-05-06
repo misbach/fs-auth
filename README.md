@@ -12,3 +12,5 @@ Replace the "appKey" with your own appKey. To get an app key go [partners.family
 
 ## Dependencies
 [FamilySearch Javascript lite SDK](https://github.com/FamilySearch/fs-js-lite)
+
+Two sample code files are provided for authenticating with a Service Account (OAuth Client Credentials), clientCredentials.ts, and serviceaccount.js
